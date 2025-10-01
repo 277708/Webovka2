@@ -60,7 +60,7 @@ def create_pdf(data):
     story.append(Spacer(1, 12))
 
     fig, ax = plt.subplots()
-    ax.scatter(data["x"], data["y"])
+    ax.scatter(data["xová"], data["yová"])
     ax.set_title("kružnica")
     ax.set_xlabel("[cm]")
     ax.set_ylabel("[cm]")
