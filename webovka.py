@@ -69,12 +69,23 @@ def create_pdf(data):
     ax.set_xlim(-25, 25)   
     ax.set_ylim(-25, 25)
 
+    img_buffer = io.BytesIO()
+    fig.savefig(img_buffer, format="PNG")
+    plt.close(fig)
+    img_buffer.seek(0)
+
+    story.append(Image(img_buffer, width=500, height=500))
+
+    doc.build(story)
+    buffer.seek(0)
+    return buffer
+
 pdf_file = create_pdf(tabulka)
 
 st.download_button(
     label="Stiahnuť PDF",
     data=pdf_file,
-    file_name="report.pdf",
+    file_name="Výstup z aplikácie.pdf",
     mime="application/pdf"
 )
 
