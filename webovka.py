@@ -43,7 +43,7 @@ chart = (
 st.altair_chart(chart, use_container_width=True)
 
 
-def create_pdf(tabulka):
+def create_pdf(data):
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=letter)
     styles = getSampleStyleSheet()
@@ -52,7 +52,7 @@ def create_pdf(tabulka):
     story.append(Paragraph("výstup z aplikácie", styles["Title"]))
     story.append(Spacer(1, 12))
 
-    table_data = [list(tabulka.columns)] + tabulka.values.tolist()
+    table_data = [list(data.columns)] + data.values.tolist()
     story.append(Table(table_data))
     story.append(Spacer(1, 12))
 
@@ -75,7 +75,7 @@ def create_pdf(tabulka):
     buffer.seek(0)
     return buffer
 
-pdf_file = create_pdf()
+pdf_file = create_pdf(tabulka)
 
 st.download_button(
     label="Stiahnuť PDF",
