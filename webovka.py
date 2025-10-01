@@ -60,10 +60,10 @@ def create_pdf(data):
     story.append(Paragraph("počet bodov kružnice je" + str(body) ))
 
     fig, ax = plt.subplots()
-    ax.scatter(data["x"], data["y"], color=farba)  
-    ax.set_title("Graf bodov")
-    ax.set_xlabel("X-ová os")
-    ax.set_ylabel("Y-ová os")
+    ax.scatter(data["xová"], data["yová"], color=farba)  
+    ax.set_title("kružnica:")
+    ax.set_xlabel("[cm]")
+    ax.set_ylabel("[cm]")
     ax.grid(True)  
 
     ax.set_xlim(-25, 25)   
