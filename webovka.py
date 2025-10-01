@@ -43,16 +43,35 @@ chart = (
 st.altair_chart(chart, use_container_width=True)
 
 
-def create_pdf():
+def create_pdf(tabulka):
     buffer = io.BytesIO()
-    c = canvas.Canvas(buffer, pagesize=letter)
-    
-    c.setFont("Helvetica", 14)
-    c.drawString(100, 750, "Môj PDF súbor zo Streamlitu")
-    c.drawString(100, 720, "Tento text je vygenerovaný v Pythone.")
-    
-    c.showPage()
-    c.save()
+    doc = SimpleDocTemplate(buffer, pagesize=letter)
+    styles = getSampleStyleSheet()
+    story = []
+
+    story.append(Paragraph("výstup z aplikácie", styles["Title"]))
+    story.append(Spacer(1, 12))
+
+    table_data = [list(tabulka.columns)] + tabulka.values.tolist()
+    story.append(Table(table_data))
+    story.append(Spacer(1, 12))
+
+    fig, ax = plt.subplots()
+    ax.scatter(data["x"], data["y"])
+    ax.set_title("kružnica")
+    ax.set_xlabel("[cm]")
+    ax.set_ylabel("[cm]")
+    ax.grid(True)
+
+    img_buffer = io.BytesIO()
+    fig.savefig(img_buffer, format="PNG")
+    plt.close(fig)
+    img_buffer.seek(0)
+
+    from reportlab.platypus import Image
+    story.append(Image(img_buffer, width=500, height=500))
+
+    doc.build(story)
     buffer.seek(0)
     return buffer
 
