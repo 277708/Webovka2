@@ -4,8 +4,11 @@ import streamlit as st
 import pandas as pd
 import altair as alt
 import math
+import matplotlib.pyplot as plt
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table
+from reportlab.lib.styles import getSampleStyleSheet
 import io
 
 
