@@ -10,6 +10,7 @@ from reportlab.pdfgen import canvas
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table
 from reportlab.lib.styles import getSampleStyleSheet
 import io
+import altair_saver
 
 
 st.title("Vytvor si svoju kružnicu!")
@@ -52,28 +53,23 @@ def create_pdf(data):
     styles = getSampleStyleSheet()
     story = []
 
-    story.append(Paragraph("výstup z aplikácie", styles["Title"]))
+    story.append(Paragraph("Výstup z aplikácie", styles["Title"]))
     story.append(Spacer(1, 12))
 
-    table_data = [list(data.columns)] + data.values.tolist()
-    story.append(Table(table_data))
-    story.append(Spacer(1, 12))
+    story.append(Paragraph("stred kružnice je [" + str(stredx) +";"+ str(stredy) +"]"))
+    story.append(Paragraph("polomer kružnice =" + str(polomer) ))
+    story.append(Paragraph("počet bodov kružnice je" + str(body) ))
 
-    fig, ax = plt.subplots()
-    ax.scatter(data["xová"], data["yová"])
-    ax.set_title("kružnica")
-    ax.set_xlabel("[cm]")
-    ax.set_ylabel("[cm]")
-    ax.grid(True)
-
+    
     img_buffer = io.BytesIO()
-    fig.savefig(img_buffer, format="PNG")
-    plt.close(fig)
+    altair_saver.save(chart, img_buffer, fmt="png")
     img_buffer.seek(0)
 
-    from reportlab.platypus import Image
-    story.append(Image(img_buffer, width=500, height=500))
-
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=letter)
+    styles = getSampleStyleSheet()
+    story = [Paragraph("Altair graf v PDF", styles["Title"]), Spacer(1,12)]
+    story.append(Image(img_buffer, width=400, height=300))
     doc.build(story)
     buffer.seek(0)
     return buffer
