@@ -6,11 +6,10 @@ import altair as alt
 import math
 import matplotlib.pyplot as plt
 from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table
 from reportlab.lib.styles import getSampleStyleSheet
 import io
-import altair_saver
+
 
 
 st.title("Vytvor si svoju kružnicu!")
@@ -60,19 +59,15 @@ def create_pdf(data):
     story.append(Paragraph("polomer kružnice =" + str(polomer) ))
     story.append(Paragraph("počet bodov kružnice je" + str(body) ))
 
-    
-    img_buffer = io.BytesIO()
-    altair_saver.save(chart, img_buffer, fmt="png")
-    img_buffer.seek(0)
+    fig, ax = plt.subplots()
+    ax.scatter(data["x"], data["y"], color=farba)  
+    ax.set_title("Graf bodov")
+    ax.set_xlabel("X-ová os")
+    ax.set_ylabel("Y-ová os")
+    ax.grid(True)  
 
-    buffer = io.BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=letter)
-    styles = getSampleStyleSheet()
-    story = [Paragraph("Altair graf v PDF", styles["Title"]), Spacer(1,12)]
-    story.append(Image(img_buffer, width=400, height=300))
-    doc.build(story)
-    buffer.seek(0)
-    return buffer
+    ax.set_xlim(-25, 25)   
+    ax.set_ylim(-25, 25)
 
 pdf_file = create_pdf(tabulka)
 
