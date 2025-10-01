@@ -4,9 +4,13 @@ import streamlit as st
 import pandas as pd
 import altair as alt
 import math
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+import io
+
 
 st.title("Vytvor si svoju kružnicu!")
-st.write("*elipsu ak si na mobile")
+st.write("*elipsu - ak si na mobile")
 
 polomer = st.number_input("Vyber si polomer:", min_value=1, max_value=20, value=3, step=1,)
 stredx = st.number_input("X-ová súradnica stredu:", min_value=-20, max_value=20, value=0,)
@@ -39,7 +43,30 @@ chart = (
 st.altair_chart(chart, use_container_width=True)
 
 
+def create_pdf():
+    buffer = io.BytesIO()
+    c = canvas.Canvas(buffer, pagesize=letter)
+    
+    c.setFont("Helvetica", 14)
+    c.drawString(100, 750, "Môj PDF súbor zo Streamlitu")
+    c.drawString(100, 720, "Tento text je vygenerovaný v Pythone.")
+    
+    c.showPage()
+    c.save()
+    buffer.seek(0)
+    return buffer
+
+pdf_file = create_pdf()
+
+st.download_button(
+    label="Stiahnuť PDF",
+    data=pdf_file,
+    file_name="report.pdf",
+    mime="application/pdf"
+)
+
+
 if st.button("Send balloons!"):
     st.balloons()
 
-st.write("Táto stránka bola vytvorená študentom FILIP BUKOVÁC, použitím stránok *https://streamlit.io/playground*, *https://chatgpt.com/*, *https://github.com/*")
+st.write("Táto stránka bola vytvorená študentom FILIP BUKOVÁC, použitím stránok *https://streamlit.io/playground*, *https://chatgpt.com/*, *https://github.com/*.")
