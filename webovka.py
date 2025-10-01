@@ -1,3 +1,4 @@
+##  nestihol som to úplne dorobiť, zatiaľ mám tento kód kt. som robil v streamlit playgrounde
 
 import streamlit as st
 import pandas as pd
@@ -5,7 +6,7 @@ import altair as alt
 import math
 
 st.title("Vytvor si svoju kružnicu!")
-
+st.write("*elipsu ak si na mobile")
 
 polomer = st.number_input("Vyber si polomer:", min_value=1, max_value=20, value=3, step=1,)
 stredx = st.number_input("X-ová súradnica stredu:", min_value=-20, max_value=20, value=0,)
@@ -41,4 +42,4 @@ st.altair_chart(chart, use_container_width=True)
 if st.button("Send balloons!"):
     st.balloons()
 
-st.write("Táto stránka bola vytvorená študentom FILIP BUKOVÁC, použitím stránok *https://streamlit.io/playground* a *https://chatgpt.com/*")
+st.write("Táto stránka bola vytvorená študentom FILIP BUKOVÁC, použitím stránok *https://streamlit.io/playground*, *https://chatgpt.com/*, *https://github.com/*")
